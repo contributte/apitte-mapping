@@ -2,10 +2,16 @@
 
 namespace Apitte\Mapping\DI;
 
+use Apitte\Core\DI\ApiExtension;
+use Apitte\Core\DI\Helpers;
 use Apitte\Core\DI\Plugin\AbstractPlugin;
 use Apitte\Core\DI\Plugin\PluginCompiler;
-use Apitte\Mapping\Handler\DecorableHandler;
-use Apitte\Mapping\Handler\Decorator\IDecorator;
+use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Mapping\Decorator\IHandlerExceptionDecorator;
+use Apitte\Mapping\Decorator\IHandlerRequestDecorator;
+use Apitte\Mapping\Decorator\IHandlerResponseDecorator;
+use Apitte\Mapping\Dispatcher\DecorableDispatcher;
+use Apitte\Mapping\Handler\DecorableServiceHandler;
 use Apitte\Mapping\Http\RequestParameterMapping;
 use Apitte\Mapping\Http\RequestParametersDecorator;
 use Apitte\Mapping\Http\Type\FloatMapper;
@@ -45,15 +51,19 @@ class MappingPlugin extends AbstractPlugin
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig();
 
-		$handler = $builder->getDefinition($this->extensionPrefix('core.handler'));
-		$handler->setAutowired(FALSE);
+		$builder->removeDefinition($this->extensionPrefix('core.handler'));
+		$builder->removeDefinition($this->extensionPrefix('core.dispatcher'));
+
+		$builder->addDefinition($this->prefix('dispatcher'))
+			->setFactory(DecorableDispatcher::class);
 
 		$builder->addDefinition($this->prefix('handler'))
-			->setFactory(DecorableHandler::class, [$handler]);
+			->setFactory(DecorableServiceHandler::class);
 
 		if ($config['types']) {
 			$builder->addDefinition($this->prefix('decorator.request.parameters'))
-				->setFactory(RequestParametersDecorator::class);
+				->setFactory(RequestParametersDecorator::class)
+				->addTag(ApiExtension::MAPPING_HANDLER_DECORATOR_TAG, ['priority' => 100]);
 
 			$rpm = $builder->addDefinition($this->prefix('request.parameters'))
 				->setFactory(RequestParameterMapping::class);
@@ -73,7 +83,67 @@ class MappingPlugin extends AbstractPlugin
 	{
 		$builder = $this->getContainerBuilder();
 
-		$decorators = $builder->findByType(IDecorator::class);
+		$this->compileTaggedDecorators();
+
+
+		$decorators = array_merge(
+			$builder->findByType(IHandlerRequestDecorator::class),
+			$builder->findByType(IHandlerResponseDecorator::class),
+			$builder->findByType(IHandlerExceptionDecorator::class)
+		);
+
+		$builder->getDefinition($this->prefix('handler'))
+			->addSetup('addDecorators', [$decorators]);
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function compileTaggedDecorators()
+	{
+		$builder = $this->getContainerBuilder();
+
+		// Find all definitions by tag
+		$definitions = $builder->findByTag(ApiExtension::MAPPING_DECORATOR_TAG);
+
+		// Ensure we have at least 1 service
+		if (!$definitions) {
+			throw new InvalidStateException(sprintf('No services with tag "%s"', ApiExtension::MAPPING_DECORATOR_TAG));
+		}
+
+		// Sort by priority
+		$definitions = Helpers::sort($definitions);
+
+		// Find all services by names
+		$decorators = Helpers::getDefinitions($definitions, $builder);
+
+		// Add decorators to dispatcher
+		$builder->getDefinition($this->prefix('dispatcher'))
+			->addSetup('addDecorators', [$decorators]);
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function compileTaggedHandlerDecorators()
+	{
+		$builder = $this->getContainerBuilder();
+
+		// Find all definitions by tag
+		$definitions = $builder->findByTag(ApiExtension::MAPPING_HANDLER_DECORATOR_TAG);
+
+		// Ensure we have at least 1 service
+		if (!$definitions) {
+			throw new InvalidStateException(sprintf('No services with tag "%s"', ApiExtension::MAPPING_HANDLER_DECORATOR_TAG));
+		}
+
+		// Sort by priority
+		$definitions = Helpers::sort($definitions);
+
+		// Find all services by names
+		$decorators = Helpers::getDefinitions($definitions, $builder);
+
+		// Add decorators to dispatcher
 		$builder->getDefinition($this->prefix('handler'))
 			->addSetup('addDecorators', [$decorators]);
 	}

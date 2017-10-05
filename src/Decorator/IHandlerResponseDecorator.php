@@ -1,6 +1,6 @@
 <?php
 
-namespace Apitte\Mapping\Handler\Decorator;
+namespace Apitte\Mapping\Decorator;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -8,14 +8,14 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * @author Milan Felix Sulc <sulcmil@gmail.com>
  */
-interface IRequestDecorator extends IDecorator
+interface IHandlerResponseDecorator extends IDecorator
 {
 
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface|ServerRequestInterface
+	 * @return ResponseInterface
 	 */
-	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response);
+	public function decorateHandlerResponse(ServerRequestInterface $request, ResponseInterface $response);
 
 }

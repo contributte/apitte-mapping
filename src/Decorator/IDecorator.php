@@ -1,6 +1,6 @@
 <?php
 
-namespace Apitte\Mapping\Handler\Decorator;
+namespace Apitte\Mapping\Decorator;
 
 /**
  * @author Milan Felix Sulc <sulcmil@gmail.com>
