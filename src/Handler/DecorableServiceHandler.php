@@ -33,6 +33,7 @@ class DecorableServiceHandler extends ServiceHandler
 	/**
 	 * GETTERS/SETTERS *********************************************************
 	 */
+
 	/**
 	 * @param IHandlerRequestDecorator $decorator
 	 * @return void
@@ -82,6 +83,7 @@ class DecorableServiceHandler extends ServiceHandler
 	/**
 	 * API *********************************************************************
 	 */
+
 	/**
 	 * @param ApiRequest $request
 	 * @param ApiResponse $response
@@ -199,6 +201,5 @@ class DecorableServiceHandler extends ServiceHandler
 
 		return $response;
 	}
-
 
 }

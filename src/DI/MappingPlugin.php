@@ -7,9 +7,6 @@ use Apitte\Core\DI\Helpers;
 use Apitte\Core\DI\Plugin\AbstractPlugin;
 use Apitte\Core\DI\Plugin\PluginCompiler;
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Mapping\Decorator\IHandlerExceptionDecorator;
-use Apitte\Mapping\Decorator\IHandlerRequestDecorator;
-use Apitte\Mapping\Decorator\IHandlerResponseDecorator;
 use Apitte\Mapping\Dispatcher\DecorableDispatcher;
 use Apitte\Mapping\Handler\DecorableServiceHandler;
 use Apitte\Mapping\Http\RequestParameterMapping;
@@ -84,16 +81,7 @@ class MappingPlugin extends AbstractPlugin
 		$builder = $this->getContainerBuilder();
 
 		$this->compileTaggedDecorators();
-
-
-		$decorators = array_merge(
-			$builder->findByType(IHandlerRequestDecorator::class),
-			$builder->findByType(IHandlerResponseDecorator::class),
-			$builder->findByType(IHandlerExceptionDecorator::class)
-		);
-
-		$builder->getDefinition($this->prefix('handler'))
-			->addSetup('addDecorators', [$decorators]);
+		$this->compileTaggedHandlerDecorators();
 	}
 
 	/**
