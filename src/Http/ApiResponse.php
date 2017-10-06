@@ -2,13 +2,13 @@
 
 namespace Apitte\Mapping\Http;
 
+use Apitte\Core\Http\ApiResponse as CoreApiResponse;
 use Apitte\Negotiation\Http\AbstractEntity;
-use Contributte\Psr7\ResponseWrapper;
 
 /**
- * Tiny wrapper for PSR-7 ResponseInterface
+ * Mapping wrapper for PSR-7 ResponseInterface
  */
-class ApiResponse extends ResponseWrapper
+class ApiResponse extends CoreApiResponse
 {
 
 	/** @var AbstractEntity */
