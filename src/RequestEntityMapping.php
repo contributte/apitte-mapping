@@ -1,6 +1,6 @@
 <?php
 
-namespace Apitte\Mapping\Http;
+namespace Apitte\Mapping;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

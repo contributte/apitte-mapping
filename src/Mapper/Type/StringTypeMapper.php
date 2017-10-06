@@ -1,8 +1,8 @@
 <?php
 
-namespace Apitte\Mapping\Http\Type;
+namespace Apitte\Mapping\Mapper\Type;
 
-class StringMapper extends AbstractMapper
+class StringTypeMapper extends AbstractTypeMapper
 {
 
 	/**

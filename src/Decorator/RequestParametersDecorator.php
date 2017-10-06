@@ -1,8 +1,8 @@
 <?php
 
-namespace Apitte\Mapping\Http;
+namespace Apitte\Mapping\Decorator;
 
-use Apitte\Mapping\Decorator\IHandlerRequestDecorator;
+use Apitte\Mapping\RequestParameterMapping;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

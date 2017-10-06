@@ -2,7 +2,7 @@
 
 namespace Apitte\Mapping\Dispatcher;
 
-use Apitte\Core\Dispatcher\ApiDispatcher;
+use Apitte\Core\Dispatcher\CoreDispatcher;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Mapping\Decorator\IDecorator;
 use Apitte\Mapping\Decorator\IExceptionDecorator;
@@ -14,7 +14,7 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class DecorableDispatcher extends ApiDispatcher
+class DecorableDispatcher extends CoreDispatcher
 {
 
 	/** @var IRequestDecorator[] */

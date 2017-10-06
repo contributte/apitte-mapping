@@ -1,19 +1,19 @@
 <?php
 
-namespace Apitte\Mapping\Http;
+namespace Apitte\Mapping;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
-use Apitte\Mapping\Http\Type\AbstractMapper;
-use Apitte\Mapping\Http\Type\IMapper;
+use Apitte\Mapping\Mapper\Type\AbstractTypeMapper;
+use Apitte\Mapping\Mapper\Type\ITypeMapper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestParameterMapping
 {
 
-	/** @var AbstractMapper[] */
+	/** @var AbstractTypeMapper[] */
 	protected $types = [];
 
 	/**
@@ -85,7 +85,7 @@ class RequestParameterMapping
 
 	/**
 	 * @param string $type
-	 * @return IMapper
+	 * @return ITypeMapper
 	 */
 	protected function getMapper($type)
 	{

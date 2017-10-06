@@ -7,13 +7,13 @@ use Apitte\Core\DI\Helpers;
 use Apitte\Core\DI\Plugin\AbstractPlugin;
 use Apitte\Core\DI\Plugin\PluginCompiler;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Mapping\Decorator\RequestParametersDecorator;
 use Apitte\Mapping\Dispatcher\DecorableDispatcher;
 use Apitte\Mapping\Handler\DecorableServiceHandler;
-use Apitte\Mapping\Http\RequestParameterMapping;
-use Apitte\Mapping\Http\RequestParametersDecorator;
-use Apitte\Mapping\Http\Type\FloatMapper;
-use Apitte\Mapping\Http\Type\IntegerMapper;
-use Apitte\Mapping\Http\Type\StringMapper;
+use Apitte\Mapping\Mapper\Type\FloatTypeMapper;
+use Apitte\Mapping\Mapper\Type\IntegerTypeMapper;
+use Apitte\Mapping\Mapper\Type\StringTypeMapper;
+use Apitte\Mapping\RequestParameterMapping;
 
 class MappingPlugin extends AbstractPlugin
 {
@@ -23,9 +23,9 @@ class MappingPlugin extends AbstractPlugin
 	/** @var array */
 	protected $defaults = [
 		'types' => [
-			'int' => IntegerMapper::class,
-			'float' => FloatMapper::class,
-			'string' => StringMapper::class,
+			'int' => IntegerTypeMapper::class,
+			'float' => FloatTypeMapper::class,
+			'string' => StringTypeMapper::class,
 		],
 	];
 
@@ -78,8 +78,6 @@ class MappingPlugin extends AbstractPlugin
 	 */
 	public function beforePluginCompile()
 	{
-		$builder = $this->getContainerBuilder();
-
 		$this->compileTaggedDecorators();
 		$this->compileTaggedHandlerDecorators();
 	}
