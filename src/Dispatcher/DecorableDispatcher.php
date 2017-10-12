@@ -195,19 +195,23 @@ class DecorableDispatcher extends CoreDispatcher
 
 	/**
 	 * @param ServerRequestInterface $request
-	 * @return ApiRequest
+	 * @return ApiRequest|ServerRequestInterface
 	 */
 	protected function createApiRequest(ServerRequestInterface $request)
 	{
+		if ($request instanceof ApiRequest) return $request;
+
 		return new ApiRequest($request);
 	}
 
 	/**
 	 * @param ResponseInterface $response
-	 * @return ApiResponse
+	 * @return ApiResponse|ResponseInterface
 	 */
 	protected function createApiResponse(ResponseInterface $response)
 	{
+		if ($response instanceof ApiResponse) return $response;
+
 		return new ApiResponse($response);
 	}
 
