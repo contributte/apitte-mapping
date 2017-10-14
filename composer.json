@@ -1,7 +1,7 @@
 {
   "name": "apitte/mapping",
-  "description": "Apitte\\Mapping plugin",
-  "keywords": ["api", "mapping"],
+  "description": "Request mappers, transformers and decorators for Apitte stack",
+  "keywords": ["api", "apitte", "mapping", "transformers", "decorators"],
   "type": "library",
   "license": "MIT",
   "homepage": "https://github.com/apitte/mapping",
