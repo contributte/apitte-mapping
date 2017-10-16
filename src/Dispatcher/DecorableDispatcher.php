@@ -101,13 +101,13 @@ class DecorableDispatcher extends CoreDispatcher
 		try {
 			// Try to route current request
 			$response = parent::dispatch($request, $response);
+
+			// Trigger response decorator
+			$response = $this->decorateResponse($request, $response);
 		} catch (Exception $e) {
 			$response = $this->decorateException($e, $request, $response);
 			if ($response === NULL) throw $e;
 		}
-
-		// Trigger response decorator
-		$response = $this->decorateResponse($request, $response);
 
 		// Convert ApiResponse to ResponseInterface
 		if ($response instanceof ApiResponse) {
