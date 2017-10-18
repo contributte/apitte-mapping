@@ -3,6 +3,7 @@
 namespace Apitte\Mapping\Handler;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Mapping\Decorator\IDecorator;
 use Apitte\Mapping\Decorator\IHandlerExceptionDecorator;
@@ -91,13 +92,14 @@ class DecorableServiceHandler extends ServiceHandler
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		// @todo validate ApiRequest & ApiResponse
-
-		// Trigger request decorator
-		$request = $this->decorateRequest($request, $response);
-
-		// Dynamic return depends on returned type of beforeHandle
-		if ($request instanceof ResponseInterface) return $request;
+		try {
+			// Trigger request decorator
+			$request = $this->decorateRequest($request, $response);
+		} catch (EarlyReturnResponseException $exception) {
+			return $exception->getResponse();
+		} catch (Exception $e) {
+			throw $e;
+		}
 
 		// Catch all exceptions and decorate them
 		try {
@@ -130,7 +132,7 @@ class DecorableServiceHandler extends ServiceHandler
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface|ServerRequestInterface
+	 * @return ServerRequestInterface
 	 */
 	protected function decorateRequest(ServerRequestInterface $request, ResponseInterface $response)
 	{
@@ -143,8 +145,8 @@ class DecorableServiceHandler extends ServiceHandler
 			}
 
 			// Validate if response is ApiResponse
-			if (!($request instanceof ServerRequestInterface) && !($request instanceof ResponseInterface)) {
-				throw new InvalidStateException(sprintf('RequestDecorator returned request must be subtype of %s or %s', ResponseInterface::class, ServerRequestInterface::class));
+			if (!($request instanceof ServerRequestInterface)) {
+				throw new InvalidStateException(sprintf('RequestDecorator returned request must be subtype of %s', ServerRequestInterface::class));
 			}
 		}
 

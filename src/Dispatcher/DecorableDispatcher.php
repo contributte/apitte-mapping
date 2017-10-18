@@ -4,6 +4,7 @@ namespace Apitte\Mapping\Dispatcher;
 
 use Apitte\Core\Dispatcher\CoreDispatcher;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Apitte\Mapping\Decorator\IDecorator;
 use Apitte\Mapping\Decorator\IExceptionDecorator;
 use Apitte\Mapping\Decorator\IRequestDecorator;
@@ -91,11 +92,14 @@ class DecorableDispatcher extends CoreDispatcher
 		$request = $this->createApiRequest($request);
 		$response = $this->createApiResponse($response);
 
-		// Trigger request decorator
-		$request = $this->decorateRequest($request, $response);
-
-		// Dynamic return depends on returned type of beforeHandle
-		if ($request instanceof ResponseInterface) return $request;
+		try {
+			// Trigger request decorator
+			$request = $this->decorateRequest($request, $response);
+		} catch (EarlyReturnResponseException $exception) {
+			return $exception->getResponse();
+		} catch (Exception $e) {
+			throw $e;
+		}
 
 		// Catch all exceptions and decorate them
 		try {
@@ -121,7 +125,7 @@ class DecorableDispatcher extends CoreDispatcher
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface|ServerRequestInterface
+	 * @return ServerRequestInterface
 	 */
 	protected function decorateRequest(ServerRequestInterface $request, ResponseInterface $response)
 	{
@@ -134,8 +138,8 @@ class DecorableDispatcher extends CoreDispatcher
 			}
 
 			// Validate if response is ApiResponse
-			if (!($request instanceof ServerRequestInterface) && !($request instanceof ResponseInterface)) {
-				throw new InvalidStateException(sprintf('RequestDecorator returned request must be subtype of %s or %s', ResponseInterface::class, ServerRequestInterface::class));
+			if (!($request instanceof ServerRequestInterface)) {
+				throw new InvalidStateException(sprintf('RequestDecorator returned request must be subtype of %s ', ServerRequestInterface::class));
 			}
 		}
 

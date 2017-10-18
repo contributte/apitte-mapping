@@ -14,7 +14,7 @@ interface IHandlerRequestDecorator extends IDecorator
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface|ServerRequestInterface
+	 * @return ServerRequestInterface
 	 */
 	public function decorateHandlerRequest(ServerRequestInterface $request, ResponseInterface $response);
 

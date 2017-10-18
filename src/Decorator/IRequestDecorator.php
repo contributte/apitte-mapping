@@ -14,7 +14,7 @@ interface IRequestDecorator extends IDecorator
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface|ServerRequestInterface
+	 * @return ServerRequestInterface
 	 */
 	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response);
 
