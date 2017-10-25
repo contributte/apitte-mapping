@@ -4,7 +4,10 @@ namespace Apitte\Mapping\Handler;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
-use Apitte\Core\Handler\ServiceHandler;
+use Apitte\Core\Handler\IHandler;
+use Apitte\Core\Handler\ServiceCallback;
+use Apitte\Core\Http\RequestAttributes;
+use Apitte\Core\Schema\Endpoint;
 use Apitte\Mapping\Decorator\IDecorator;
 use Apitte\Mapping\Decorator\IHandlerExceptionDecorator;
 use Apitte\Mapping\Decorator\IHandlerRequestDecorator;
@@ -13,11 +16,15 @@ use Apitte\Mapping\Http\ApiRequest;
 use Apitte\Mapping\Http\ApiResponse;
 use Apitte\Negotiation\Http\ArrayEntity;
 use Exception;
+use Nette\DI\Container;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class DecorableServiceHandler extends ServiceHandler
+class DecorableServiceHandler implements IHandler
 {
+
+	/** @var Container */
+	protected $container;
 
 	/** @var IHandlerRequestDecorator[] */
 	protected $requestDecorators = [];
@@ -30,6 +37,14 @@ class DecorableServiceHandler extends ServiceHandler
 
 	/** @var IHandlerResponseDecorator[] */
 	protected $callbackDecorators = [];
+
+	/**
+	 * @param Container $container
+	 */
+	public function __construct(Container $container)
+	{
+		$this->container = $container;
+	}
 
 	/**
 	 * GETTERS/SETTERS *********************************************************
@@ -120,8 +135,15 @@ class DecorableServiceHandler extends ServiceHandler
 			if ($response === NULL) throw $e;
 		}
 
-		// Validate response
-		$response = $this->finalize($response);
+		// Validate if response is returned
+		if ($response === NULL) {
+			throw new InvalidStateException('Handler returned response cannot be NULL');
+		}
+
+		// Validate if response is ResponseInterface
+		if (!($response instanceof ResponseInterface)) {
+			throw new InvalidStateException(sprintf('Handler returned response must be subtype of %s', ResponseInterface::class));
+		}
 
 		// Trigger response decorator
 		$response = $this->decorateResponse($request, $response);
@@ -202,6 +224,52 @@ class DecorableServiceHandler extends ServiceHandler
 		}
 
 		return $response;
+	}
+
+	/**
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ServiceCallback
+	 */
+	protected function createCallback(ServerRequestInterface $request, ResponseInterface $response)
+	{
+		$endpoint = $this->getEndpoint($request);
+
+		// Find handler in DI container by class
+		$service = $this->getService($endpoint);
+		$method = $endpoint->getHandler()->getMethod();
+
+		// Create callback
+		$callback = new ServiceCallback($service, $method);
+		$callback->setArguments([$request, $response]);
+
+		return $callback;
+	}
+
+	/**
+	 * @param ServerRequestInterface $request
+	 * @return Endpoint
+	 */
+	protected function getEndpoint(ServerRequestInterface $request)
+	{
+		/** @var Endpoint $endpoint */
+		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
+
+		// Validate that we have an endpoint
+		if (!$endpoint) {
+			throw new InvalidStateException(sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
+		}
+
+		return $endpoint;
+	}
+
+	/**
+	 * @param Endpoint $endpoint
+	 * @return object
+	 */
+	protected function getService(Endpoint $endpoint)
+	{
+		return $this->container->getByType($endpoint->getHandler()->getClass());
 	}
 
 }
