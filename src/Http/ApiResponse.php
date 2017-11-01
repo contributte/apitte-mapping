@@ -3,6 +3,7 @@
 namespace Apitte\Mapping\Http;
 
 use Apitte\Core\Http\ApiResponse as CoreApiResponse;
+use Apitte\Core\Schema\Endpoint;
 use Apitte\Negotiation\Http\AbstractEntity;
 
 /**
@@ -13,6 +14,9 @@ class ApiResponse extends CoreApiResponse
 
 	/** @var AbstractEntity */
 	protected $entity;
+
+	/** @var Endpoint */
+	protected $endpoint;
 
 	/**
 	 * @return AbstractEntity
@@ -30,6 +34,26 @@ class ApiResponse extends CoreApiResponse
 	{
 		$new = clone $this;
 		$new->entity = $entity;
+
+		return $new;
+	}
+
+	/**
+	 * @return Endpoint
+	 */
+	public function getEndpoint()
+	{
+		return $this->endpoint;
+	}
+
+	/**
+	 * @param Endpoint $endpoint
+	 * @return static
+	 */
+	public function withEndpoint(Endpoint $endpoint)
+	{
+		$new = clone $this;
+		$new->endpoint = $endpoint;
 
 		return $new;
 	}

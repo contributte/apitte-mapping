@@ -145,6 +145,11 @@ class DecorableServiceHandler implements IHandler
 			throw new InvalidStateException(sprintf('Handler returned response must be subtype of %s', ResponseInterface::class));
 		}
 
+		// Pass endpoint
+		if (($endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, NULL))) {
+			$response = $response->withEndpoint($endpoint);
+		}
+
 		// Trigger response decorator
 		$response = $this->decorateResponse($request, $response);
 
