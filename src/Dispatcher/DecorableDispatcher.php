@@ -2,7 +2,7 @@
 
 namespace Apitte\Mapping\Dispatcher;
 
-use Apitte\Core\Dispatcher\CoreDispatcher;
+use Apitte\Core\Dispatcher\IDispatcher;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Apitte\Mapping\Decorator\IDecorator;
@@ -15,7 +15,7 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class DecorableDispatcher extends CoreDispatcher
+class DecorableDispatcher implements IDispatcher
 {
 
 	/** @var IRequestDecorator[] */
@@ -26,6 +26,17 @@ class DecorableDispatcher extends CoreDispatcher
 
 	/** @var IExceptionDecorator[] */
 	protected $exceptionDecorators = [];
+
+	/** @var IDispatcher */
+	protected $dispatcher;
+
+	/**
+	 * @param IDispatcher $dispatcher
+	 */
+	public function __construct(IDispatcher $dispatcher)
+	{
+		$this->dispatcher = $dispatcher;
+	}
 
 	/**
 	 * GETTERS/SETTERS *********************************************************
@@ -104,7 +115,7 @@ class DecorableDispatcher extends CoreDispatcher
 		// Catch all exceptions and decorate them
 		try {
 			// Try to route current request
-			$response = parent::dispatch($request, $response);
+			$response = $this->dispatcher->dispatch($request, $response);
 
 			// Trigger response decorator
 			$response = $this->decorateResponse($request, $response);
@@ -203,8 +214,6 @@ class DecorableDispatcher extends CoreDispatcher
 	 */
 	protected function createApiRequest(ServerRequestInterface $request)
 	{
-		if ($request instanceof ApiRequest) return $request;
-
 		return new ApiRequest($request);
 	}
 
@@ -214,8 +223,6 @@ class DecorableDispatcher extends CoreDispatcher
 	 */
 	protected function createApiResponse(ResponseInterface $response)
 	{
-		if ($response instanceof ApiResponse) return $response;
-
 		return new ApiResponse($response);
 	}
 

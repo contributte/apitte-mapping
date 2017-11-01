@@ -6,6 +6,7 @@ use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\DI\Helpers;
 use Apitte\Core\DI\Plugin\AbstractPlugin;
 use Apitte\Core\DI\Plugin\PluginCompiler;
+use Apitte\Core\Dispatcher\CoreDispatcher;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Mapping\Decorator\RequestParametersDecorator;
 use Apitte\Mapping\Dispatcher\DecorableDispatcher;
@@ -14,6 +15,7 @@ use Apitte\Mapping\Mapper\Type\FloatTypeMapper;
 use Apitte\Mapping\Mapper\Type\IntegerTypeMapper;
 use Apitte\Mapping\Mapper\Type\StringTypeMapper;
 use Apitte\Mapping\RequestParameterMapping;
+use Nette\DI\Statement;
 
 class MappingPlugin extends AbstractPlugin
 {
@@ -52,7 +54,7 @@ class MappingPlugin extends AbstractPlugin
 		$builder->removeDefinition($this->extensionPrefix('core.dispatcher'));
 
 		$builder->addDefinition($this->prefix('dispatcher'))
-			->setFactory(DecorableDispatcher::class);
+			->setFactory(DecorableDispatcher::class, [new Statement(CoreDispatcher::class)]);
 
 		$builder->addDefinition($this->prefix('handler'))
 			->setFactory(DecorableServiceHandler::class);
