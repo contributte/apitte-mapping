@@ -19,7 +19,7 @@
 ## Install
 
 ```
-composer require apitte/mapping
+$ composer require apitte/mapping
 ```
 
 ## Version
