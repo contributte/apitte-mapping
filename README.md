@@ -18,8 +18,8 @@
 
 ## Install
 
-```
-$ composer require apitte/mapping
+```bash
+composer require apitte/mapping
 ```
 
 ## Version
