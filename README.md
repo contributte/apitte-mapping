@@ -1,53 +1,37 @@
-# Apitte\Core
+![](https://heatbadger.vercel.app/github/readme/contributte/apitte-mapping/?deprecated=1)
 
-:pig: Request mapping for Apitte [`Nette Framework`](https://github.com/nette/).
+<p align=center>
+    <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
+    <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
+    <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/sponsor/donations/F96854"></a>
+</p>
 
------
+<p align=center>
+    Website 🚀 <a href="https://contributte.org">contributte.org</a> | Contact 👨🏻‍💻 <a href="https://f3l1x.io">f3l1x.io</a> | Twitter 🐦 <a href="https://twitter.com/contributte">@contributte</a>
+</p>
 
-[![Build Status](https://img.shields.io/travis/apitte/mapping.svg?style=flat-square)](https://travis-ci.org/apitte/mapping)
-[![Code coverage](https://img.shields.io/coveralls/apitte/mapping.svg?style=flat-square)](https://coveralls.io/r/apitte/mapping)
-[![Licence](https://img.shields.io/packagist/l/apitte/mapping.svg?style=flat-square)](https://packagist.org/packages/apitte/mapping)
+## Disclaimer
 
-[![Downloads this Month](https://img.shields.io/packagist/dm/apitte/mapping.svg?style=flat-square)](https://packagist.org/packages/apitte/mapping)
-[![Downloads total](https://img.shields.io/packagist/dt/apitte/mapping.svg?style=flat-square)](https://packagist.org/packages/apitte/mapping)
-[![Latest stable](https://img.shields.io/packagist/v/apitte/mapping.svg?style=flat-square)](https://packagist.org/packages/apitte/mapping)
+| :warning: | This project is no longer being maintained. Please use [apitte/core](https://github.com/apitte/core).
+|---|---|
 
-## Discussion / Help
+| Composer | [`apitte/mapping`](https://packagist.org/packages/apitte/mapping) |
+|---| --- |
+| Version | ![](https://badgen.net/packagist/v/apitte/mapping) |
+| PHP | ![](https://badgen.net/packagist/php/apitte/mapping) |
+| License | ![](https://badgen.net/github/license/apitte/mapping) |
 
-[![Join the chat](https://img.shields.io/gitter/room/apitte/apitte.svg?style=flat-square)](http://bit.ly/apittegitter)
+## Development
 
-## Install
+See [how to contribute](https://contributte.org/contributing.html) to this package.
 
-```bash
-composer require apitte/mapping
-```
+This package was maintain by these authors.
 
-## Version
-
-| State       | Version      | Branch   | PHP      |
-|-------------|--------------|----------|----------|
-| development | `dev-master` | `master` | `>= 5.6` |
-
-## Maintainers
-
-<table>
-  <tbody>
-    <tr>
-      <td align="center">
-        <a href="https://github.com/f3l1x">
-            <img width="150" height="150" src="https://avatars2.githubusercontent.com/u/538058?v=3&s=150">
-        </a>
-        </br>
-        <a href="https://github.com/f3l1x">Milan Felix Šulc</a>
-      </td>
-    </tr>
-  <tbody>
-</table>
+<a href="https://github.com/f3l1x">
+  <img width="80" height="80" src="https://avatars2.githubusercontent.com/u/538058?v=3&s=80">
+</a>
 
 -----
 
-The development is sponsored by [Tlapnet](http://www.tlapnet.cz) and a lot of coffeees. Thank you guys! :+1:
-
------
-
-Thank you for testing, reporting and contributing.
+Consider to [support](https://contributte.org/partners.html) **contributte** development team.
+Also thank you for using this package.
