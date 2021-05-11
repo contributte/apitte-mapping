@@ -17,7 +17,10 @@
   },
   "require-dev": {
     "ninjify/qa": "^0.12",
-    "ninjify/nunjuck": "^0.4"
+    "ninjify/nunjuck": "^0.4",
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-nette": "^0.12",
+    "contributte/di": "^0.5.1"
   },
   "autoload": {
     "psr-4": {

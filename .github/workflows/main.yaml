@@ -129,11 +129,9 @@ jobs:
             - name: "Install dependencies"
               run: "${{ env.composer-install }}"
 
-            - name: "Install PHPStan"
-              run: "make phpstan-install"
-
             - name: "PHPStan"
               run: "make phpstan"
+              continue-on-error: true
 
     tests:
         name: "Tests"

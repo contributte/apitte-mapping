@@ -1,5 +1,15 @@
 includes:
-	- temp/phpstan/vendor/phpstan/phpstan-nette/extension.neon
-	- temp/phpstan/vendor/phpstan/phpstan-nette/rules.neon
+	- vendor/phpstan/phpstan-nette/extension.neon
+	- vendor/phpstan/phpstan-nette/rules.neon
 
 parameters:
+	ignoreErrors:
+		-
+			message: "#^Instantiated class Apitte\\\\Negotiation\\\\Http\\\\ArrayEntity not found\\.$#"
+			count: 1
+			path: src/Handler/DecorableServiceHandler.php
+
+		-
+			message: "#^Parameter \\$entity of method Apitte\\\\Mapping\\\\Http\\\\ApiResponse\\:\\:withEntity\\(\\) has invalid typehint type Apitte\\\\Negotiation\\\\Http\\\\AbstractEntity\\.$#"
+			count: 1
+			path: src/Http/ApiResponse.php

@@ -2,7 +2,6 @@
 
 namespace Apitte\Mapping\DI;
 
-use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\DI\Helpers;
 use Apitte\Core\DI\Plugin\AbstractPlugin;
 use Apitte\Core\DI\Plugin\PluginCompiler;
@@ -15,12 +14,14 @@ use Apitte\Mapping\Mapper\Type\FloatTypeMapper;
 use Apitte\Mapping\Mapper\Type\IntegerTypeMapper;
 use Apitte\Mapping\Mapper\Type\StringTypeMapper;
 use Apitte\Mapping\RequestParameterMapping;
-use Nette\DI\Statement;
+use Nette\DI\Definitions\Statement;
 
 class MappingPlugin extends AbstractPlugin
 {
 
 	const PLUGIN_NAME = 'mapping';
+	const DECORATOR_TAG = 'apitte.mapping.decorator';
+	const HANDLER_DECORATOR_TAG = 'apitte.mapping.handler.decorator';
 
 	/** @var array */
 	protected $defaults = [
@@ -62,7 +63,7 @@ class MappingPlugin extends AbstractPlugin
 		if ($config['types']) {
 			$builder->addDefinition($this->prefix('decorator.request.parameters'))
 				->setFactory(RequestParametersDecorator::class)
-				->addTag(ApiExtension::MAPPING_HANDLER_DECORATOR_TAG, ['priority' => 100]);
+				->addTag(self::HANDLER_DECORATOR_TAG, ['priority' => 100]);
 
 			$rpm = $builder->addDefinition($this->prefix('request.parameters'))
 				->setFactory(RequestParameterMapping::class);
@@ -92,11 +93,11 @@ class MappingPlugin extends AbstractPlugin
 		$builder = $this->getContainerBuilder();
 
 		// Find all definitions by tag
-		$definitions = $builder->findByTag(ApiExtension::MAPPING_DECORATOR_TAG);
+		$definitions = $builder->findByTag(self::DECORATOR_TAG);
 
 		// Ensure we have at least 1 service
 		if (!$definitions) {
-			throw new InvalidStateException(sprintf('No services with tag "%s"', ApiExtension::MAPPING_DECORATOR_TAG));
+			throw new InvalidStateException(sprintf('No services with tag "%s"', self::DECORATOR_TAG));
 		}
 
 		// Sort by priority
@@ -118,11 +119,11 @@ class MappingPlugin extends AbstractPlugin
 		$builder = $this->getContainerBuilder();
 
 		// Find all definitions by tag
-		$definitions = $builder->findByTag(ApiExtension::MAPPING_HANDLER_DECORATOR_TAG);
+		$definitions = $builder->findByTag(self::HANDLER_DECORATOR_TAG);
 
 		// Ensure we have at least 1 service
 		if (!$definitions) {
-			throw new InvalidStateException(sprintf('No services with tag "%s"', ApiExtension::MAPPING_HANDLER_DECORATOR_TAG));
+			throw new InvalidStateException(sprintf('No services with tag "%s"', self::HANDLER_DECORATOR_TAG));
 		}
 
 		// Sort by priority
