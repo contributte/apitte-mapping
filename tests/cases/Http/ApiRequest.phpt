@@ -11,27 +11,26 @@ use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Mapping\Http\ApiRequest;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Ninjify\Nunjuck\Toolkit;
 use Tester\Assert;
 
 // Endpoint
-test(function () {
+Toolkit::test(function () {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$apiRequest = new ApiRequest($request);
 
-	Assert::false($apiRequest->hasEndpoint());
-	Assert::null($apiRequest->getEndpoint());
+	Assert::null($apiRequest->getAttribute(RequestAttributes::ATTR_ENDPOINT, null));
 
 	$endpoint = new Endpoint();
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
 	$apiRequest = new ApiRequest($request);
 
-	Assert::true($apiRequest->hasEndpoint());
-	Assert::type(Endpoint::class, $apiRequest->getEndpoint());
-	Assert::same($endpoint, $apiRequest->getEndpoint());
+	Assert::type(Endpoint::class, $apiRequest->getAttribute(RequestAttributes::ATTR_ENDPOINT));
+	Assert::same($endpoint, $apiRequest->getAttribute(RequestAttributes::ATTR_ENDPOINT));
 });
 
 // Parameters
-test(function () {
+Toolkit::test(function () {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$apiRequest = new ApiRequest($request);
 
