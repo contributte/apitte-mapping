@@ -12,7 +12,7 @@
 
 ## Disclaimer
 
-| :warning: | This project is no longer being maintained. Please use [apitte/core](https://github.com/apitte/core).
+| :warning: | This project is no longer being maintained. Please use [contributte/apitte](https://github.com/contributte/apitte).
 |---|---|
 
 | Composer | [`apitte/mapping`](https://packagist.org/packages/apitte/mapping) |
