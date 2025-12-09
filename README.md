@@ -1,4 +1,4 @@
-![](https://heatbadger.vercel.app/github/readme/contributte/apitte-mapping/?deprecated=1)
+![](https://heatbadger.now.sh/github/readme/contributte/apitte-mapping/?deprecated=1)
 
 <p align=center>
     <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
@@ -12,18 +12,16 @@
 
 ## Disclaimer
 
-| :warning: | This project is no longer being maintained. Please use [contributte/apitte](https://github.com/contributte/apitte).
+| :warning: | This project is no longer being maintained. Please use [contributte/apitte](https://github.com/contributte/apitte).|
 |---|---|
 
 | Composer | [`apitte/mapping`](https://packagist.org/packages/apitte/mapping) |
 |---| --- |
 | Version | ![](https://badgen.net/packagist/v/apitte/mapping) |
 | PHP | ![](https://badgen.net/packagist/php/apitte/mapping) |
-| License | ![](https://badgen.net/github/license/apitte/mapping) |
+| License | ![](https://badgen.net/github/license/contributte/apitte-mapping) |
 
 ## Development
-
-See [how to contribute](https://contributte.org/contributing.html) to this package.
 
 This package was maintain by these authors.
 
@@ -34,4 +32,4 @@ This package was maintain by these authors.
 -----
 
 Consider to [support](https://contributte.org/partners.html) **contributte** development team.
-Also thank you for using this package.
+Also thank you for being used this package.
